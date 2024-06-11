@@ -1,0 +1,140 @@
+<!-- Favicon -->
+{{!--
+<link rel="shortcut icon" type="image/x-icon" href="/assetsAdmin/imgs/theme/favicon.svg"> --}}
+<!-- Template CSS -->
+{{!--
+<link href="/assetsAdmin/css/main.css" rel="stylesheet" type="text/css" /> --}}
+
+<main class="main">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html" rel="nofollow">Home</a>
+                <span></span> Pages
+                <span></span> Account
+            </div>
+        </div>
+    </div>
+    <section class="pt-50 pb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 m-auto">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="dashboard-menu">
+                                <ul class="nav flex-column" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link " id="dashboard-tab" href="/profile" role="tab"
+                                            aria-controls="dashboard" aria-selected="false"><i
+                                                class="fi-rs-settings-sliders mr-10"></i>Dashboard</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="orders-tab" href="/myorders" role="tab"
+                                            aria-controls="orders" aria-selected="false"><i
+                                                class="fi-rs-shopping-bag mr-10"></i>Orders</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="track-orders-tab" href="/wallet" role="tab"
+                                            aria-controls="track-orders" aria-selected="false"><i
+                                                class="fi-rs-shopping-cart-check mr-10"></i>Wallet</a>
+                                    </li>
+                                    {{!-- <li class="nav-item">
+                                        <a class="nav-link" id="track-orders-tab" href="#wallet-history" role="tab"
+                                            aria-controls="track-orders" aria-selected="false"><i
+                                                class="fi-rs-shopping-cart-check mr-10"></i>Wallet
+                                            History</a>
+                                    </li> --}}
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="address-tab" href="/addresses" role="tab"
+                                            aria-selected="true"><i class="fi-rs-marker mr-10"></i>My Address</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="account-detail-tab" href="edit_profile" role="tab"
+                                            aria-controls="account-detail" aria-selected="true"><i
+                                                class="fi-rs-user mr-10"></i>Account details</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="changepass-tab" href="/changepassword" role="tab"
+                                            aria-controls="password" aria-selected="true"><i
+                                                class="fi-rs-lock mr-10"></i>Change password</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="track-orders-tab" href="#referal" role="tab"
+                                            aria-controls="track-orders" aria-selected="false"><i
+                                                class="fi-rs-shopping-cart-check mr-10"></i>Referals</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="logout"><i class="fi-rs-sign-out mr-10"></i>Logout</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="tab-content dashboard-content">
+
+                                <div class="tab-pane fade active show" id="orders" role="tabpanel"
+                                    aria-labelledby="orders-tab">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">Your Orders</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    {{!-- {{#each myOrders}}
+                                                    <tr>
+                                                        <td class="text-center">{{this.orderId}}</td>
+                                                        <td class="text-center">{{this.paymentMethod}}</td>
+                                                        <td class="text-center">₹{{this.total}}</td>
+                                                        <td class="text-center"><span
+                                                                class="badge rounded-pill alert-warning">{{this.status}}</span>
+                                                        </td>
+                                                        <td class="text-center">{{this.date}}</td>
+                                                        <td class="text-center">
+                                                            <input type="hidden" name="order_id" value="{{this._id}}">
+                                                            <a href="/orderDetails/{{this._id}}" type="button"
+                                                                class="btn btn-md rounded font-sm">Detail</a>
+                                                        </td>
+                                                    </tr>
+                                                    {{/each}} --}}
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Order</th>
+                                                            <th>Date</th>
+                                                            <th>Status</th>
+                                                            <th>Total</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {{!-- {{#length myorders}} --}}
+                                                        {{#each myOrders}}
+                                                        <tr>
+                                                            <td>#{{this.orderId}}</td>
+                                                            <td>{{ formatDate this.date}}</td>
+                                                            <td>{{this.status}}</td>
+                                                            <td>₹{{this.total}}</td>
+                                                            <td><a href="/orderDetails/{{this._id}}" class="btn-small d-block">View</a></td>
+                                                        </tr>
+                                                        {{/each}}
+                                                        {{!-- {{else}} --}}
+                                                        
+                                                            {{!-- <td colspan="5" class="text-center">No orders found</td> --}}
+                                                        
+                                                        {{!-- {{/length}} --}}
+                                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

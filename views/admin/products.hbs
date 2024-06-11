@@ -1,0 +1,293 @@
+<main class="main-wrap">
+    <header class="main-header navbar">
+        <div class="col-search">
+            <form class="searchform">
+                <div class="input-group">
+                    <input list="search_terms" type="text" class="form-control" placeholder="Search term">
+                    <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
+                </div>
+                <datalist id="search_terms">
+                    <option value="Products">
+                    <option value="New orders">
+                    <option value="Apple iphone">
+                    <option value="Ahmed Hassan">
+                </datalist>
+            </form>
+        </div>
+        <div class="col-nav">
+            <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i
+                    class="material-icons md-apps"></i> </button>
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link btn-icon" href="#">
+                        <i class="material-icons md-notifications animation-shake"></i>
+                        <span class="badge rounded-pill">3</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
+                </li>
+
+            </ul>
+        </div>
+    </header>
+    <section class="content-main">
+        <div class="content-header">
+            <h2 class="content-title">Products list</h2>
+            <div>
+                <a href="/admin/addProduct" class="btn btn-primary"><i class="material-icons md-plus"></i> Create
+                    new</a>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <header class="card-header">
+                <div class="row gx-3">
+                    <div class="col-lg-4 col-md-6 me-auto">
+                        <input type="text" placeholder="Search..." class="form-control">
+                    </div>
+                    <div class="col-lg-2 col-md-3 col-6">
+                        <select class="form-select">
+                            <option>Status</option>
+                            <option>Active</option>
+                            <option>Disabled</option>
+                            <option>Show all</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2 col-md-3 col-6">
+                        <select class="form-select">
+                            <option>Show 20</option>
+                            <option>Show 30</option>
+                            <option>Show 40</option>
+                        </select>
+                    </div>
+                </div>
+            </header> <!-- card-header end// -->
+            <div class="card-body ">
+                <div class="table-responsive ">
+                    <table class="table table-hover ">
+                        <thead>
+                            <tr>
+                                <th>Seller</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Stock</th>
+                                <th> Action </th>
+                            </tr>
+                        </thead>
+                        {{#each products}}
+                        <tbody>
+                            <tr>
+                                <td width="20%">
+                                    <a href="#" class="itemside">
+                                        <div class="left">
+                                            <img src="/images/products/{{image.[0]}}" class="img-sm img-thumbnail"
+                                                alt="Item">
+                                        </div>
+                                        <div class="info pl-3">
+                                            <h6 class="mb-0 title">{{name}}</h6>
+                                            <small class="text-muted">{{this.category.category}}</small>
+                                        </div>
+                                    </a>
+                                </td>
+                                <td width="20%">{{description}}</td>
+                                {{#if isBlocked}}
+                                <td width="20%"><span class="badge rounded-pill alert-danger">Blocked</span></td>
+
+                                {{else}}
+                                <td width="20%"><span class="badge rounded-pill alert-success">Active</span></td>
+                                {{/if}}
+
+                                <td width="20%">{{stock}}</td>
+                                <td width="20%">
+                                    {{#if this.isBlocked}}
+                                    <a id="blockprod" data-product-id="{{this._id}}"
+                                        class="btn btn-sm font-sm btn-light" href="/admin/blockProduct">
+
+                                        Unblock
+                                    </a>
+                                    {{else}}
+                                    <a id="blockprod" data-product-id="{{this._id}}"
+                                        class="btn btn-sm font-sm btn-light" href="/admin/blockProduct">
+
+                                        Block
+                                    </a>
+                                    {{/if}}
+                                    <a href="/admin/edit_product/{{_id}}" class="btn btn-sm font-sm rounded btn-brand">
+                                        <i class="material-icons md-edit"></i> Edit
+                                    </a>
+                                    <a href="/admin/delete_product" data-product-id="{{this._id}}" id="deleteprod"
+                                        class="btn btn-sm font-sm btn-light rounded">
+                                        <i class="material-icons md-delete_forever"></i> Delete
+                                    </a>
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+                        {{/each}}
+                    </table> <!-- table-responsive.// -->
+                </div>
+            </div> <!-- card-body end// -->
+        </div> <!-- card end// -->
+        <div class="pagination-area mt-15 mb-50">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-start">
+                    {{#each pages}}
+                    <li class="page-item active"><a class="page-link" href="?page={{this}}">{{this}}</a></li>
+                    {{/each}}
+                </ul>
+            </nav>
+        </div>
+    </section> <!-- content-main end// -->
+    <footer class="main-footer font-xs">
+        <div class="row pb-30 pt-15">
+            <div class="col-sm-6">
+                <script data-cfasync="false"
+                    src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+                <script>
+                    document.write(new Date().getFullYear())
+                </script> ©, ConsoleHaven- Haven for Gamers .
+            </div>
+            <div class="col-sm-6">
+                <div class="text-sm-end">
+                    All rights reserved
+                </div>
+            </div>
+        </div>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    ////////////delete product
+    $(document).ready(function () {
+        $(document).on('click', '#deleteprod', function (e) {
+            e.preventDefault();
+            var id = $(this).data('product-id');
+            //var wishId = $(this).data('whishlist-id'); // Corrected variable name to wishId
+
+            // Store reference to $(this) in a variable for use inside AJAX success and error callbacks
+            var $this = $(this);
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#088178",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/admin/delete_product',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ id: id }),
+                        success: function (productData) {
+                            console.log("Product removed from Cart successfully");
+                            // If you want to remove the row from the table upon successful removal
+                            $this.closest('tr').remove(); // Use $this instead of $(this)
+                            // swal("Removed from wishlist", "The product has been removed from your wishlist.", "success");
+                            {
+                                Swal.fire({
+                                    title: 'Removed!',
+                                    text: 'Product Succesfully Removed from Cart!!!',
+                                    icon: 'success',
+                                    confirmButtonText: 'Cool'
+                                })
+                            }
+
+
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error removing product from wishlist:", error);
+                            swal("Error", "Something went wrong. Please try again later.", "error");
+                        }
+                    });
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        icon: "success"
+                    });
+                }
+            });
+
+
+        });
+    });
+
+
+    /////block product
+
+    $(document).ready(function () {
+        $(document).on('click', '#blockprod', function (e) {
+            e.preventDefault();
+            var id = $(this).data('product-id');
+            //var wishId = $(this).data('whishlist-id'); // Corrected variable name to wishId
+
+            // Store reference to $(this) in a variable for use inside AJAX success and error callbacks
+            var $this = $(this);
+
+            Swal.fire({
+                title: "Are you sure?",
+                // text: "Do you want to block the Product?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#088178",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'PUT',
+                        url: '/admin/blockProduct',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ id: id }),
+                        success: function (productData) {
+                            console.log("ProductBlocked");
+
+
+                            {
+                                Swal.fire({
+                                    title: 'Done!',
+                                    //text: 'Product Succesfully Blocked!!!',
+                                    icon: 'success',
+                                    confirmButtonText: 'Cool'
+                                }).then((confirm) => {
+                                    if (confirm.isConfirmed) {
+                                        window.location.reload();
+                                    }
+                                });
+                            }
+
+
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error removing product from wishlist:", error);
+                            swal("Error", "Something went wrong. Please try again later.", "error");
+                        }
+                    });
+                    Swal.fire({
+                        title: "Done!",
+                       // text: "Your Product has been Blocked.",
+                        icon: "success"
+                    }).then((confirm) => {
+                                    if (confirm.isConfirmed) {
+                                        window.location.reload();
+                                    }
+                                });;
+                }
+            });
+
+
+        });
+    });
+
+
+</script>

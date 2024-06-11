@@ -1,0 +1,306 @@
+<main class="main-wrap">
+    <header class="main-header navbar">
+        <div class="col-search">
+            <form class="searchform">
+                <div class="input-group">
+                    <input list="search_terms" type="text" class="form-control" placeholder="Search term">
+                    <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
+                </div>
+                <datalist id="search_terms">
+                    <option value="Products">
+                    <option value="New orders">
+                    <option value="Apple iphone">
+                    <option value="Ahmed Hassan">
+                </datalist>
+            </form>
+        </div>
+        <div class="col-nav">
+            <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i
+                    class="material-icons md-apps"></i> </button>
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link btn-icon" href="#">
+                        <i class="material-icons md-notifications animation-shake"></i>
+                        <span class="badge rounded-pill">3</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
+                </li>
+               
+               
+            </ul>
+        </div>
+    </header>
+    <section class="content-main">
+        <div class="row">
+            <div class="col-9">
+                <div class="content-header">
+                    <h2 class="content-title">Edit Product</h2>
+                    {{!-- <div>
+                        <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button>
+                        <button class="btn btn-md rounded font-sm hover-up">Publich</button>
+                    </div> --}}
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4>Enter the details below:</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" class="form-add-product" action="/admin/update_product/{{product._id}}"
+                            enctype="multipart/form-data" onsubmit="return Validation()">
+                            <div class="mb-4">
+                                <label for="product_name" class="form-label">Product Name</label>
+                                <input type="text" value="{{product.name}}" placeholder="Type here" name="name"
+                                    class="form-control" id="productName">
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Full description</label>
+                                {{!-- <textarea placeholder="Type here" name="description" id="longdescription"
+                                    class="form-control" rows="4 " value="{{product.description}}"></textarea> --}}
+                                <input class="form-control" id="longdescription" name="description" rows="3"
+                                    value="{{product.description}}" required></input>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Price</label>
+                                        <div class="row gx-2">
+                                            <input placeholder="₹" type="text" value="{{product.price}}" id="price"
+                                                name="price" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Stock</label>
+                                        <input name="stock" value="{{product.stock}}" class="form-control"
+                                            placeholder="Quantity" type="text" id="Qty">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label class="form-label">Category:</label>
+                                    <select name="category" id="category" class="form-select">
+                                        {{#each category}}
+                                        <option value="{{this._id}}">{{this.category}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+
+
+                                {{!-- <div class="col-lg-3">
+                                    <div class="form-element m-2">
+                                        <input type="file" id="file-1" name="image" accept="image/*">
+                                        <label for="file-1" id="file-1-preview">
+                                            <img src="/assetsAdmin/imgs/theme/upload.svg" alt="">
+                                            <div>
+                                                <span>+</span>
+                                            </div>
+                                        </label>
+                                    </div> <!-- card end// -->
+
+                                </div> --}}
+
+                            </div>
+                            <div class="form-group">
+        <label for="productImage">Product Image:</label>
+        <div class="d-flex border p-10 m-tb-10">
+          <input name="product-id" type="hidden" value="{{product._id}}">
+          {{#each product.image}}
+          <div class="image-container" onclick="deleteProImg()">
+            <div  class="badge rounded-pill alert-danger "><p  class="close-button" data-image-index="{{@index}}"
+              style="text-decoration: none;">×</p></div>
+            <img src="/images/products/{{this}}" alt="images" style="width: 80px; height: auto;" class="m-2 pro-image"
+              data-image-index="{{@index}}">
+          </div>
+
+          {{/each}}
+        </div>
+        <input type="file" class="form-control-file" id="productImage" multiple name="image">
+      </div>
+
+                            <div class="d-flex g-2">
+                                <div class="m-2">
+                                    <button type="submit" class="btn btn-primary">Edit Product</button>
+
+                                </div>
+                                <div class="m-2">
+                                    <a href="/admin/products" type="button" id="backbutton"  class="btn btn-primary">back</a>
+
+                                </div>
+
+
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div> <!-- card end// -->
+
+
+
+            </div>
+    </section> <!-- content-main end// -->
+    <footer class="main-footer font-xs">
+        <div class="row pb-30 pt-15">
+            <div class="col-sm-6">
+                <script>
+                    document.write(new Date().getFullYear())
+                </script> ©, ConsoleHaven- Haven for Gamers .
+            </div>
+            <div class="col-sm-6">
+                <div class="text-sm-end">
+                    All rights reserved
+                </div>
+            </div>
+        </div>
+    </footer>
+</main>
+
+<script>
+ const deleteImage = async (productId, imageIndex) => {
+    try {
+      const response = await fetch(`/admin/product_img_delete?id=${productId}&?image=${imageIndex}`, {
+        method: 'DELETE'
+      });
+
+      const data = await response.json();
+      console.log(data.message);
+
+      if (data) {
+        const imageElem = document.querySelector(`.pro-image[data-image-index="${imageIndex}"]`);
+        if (imageElem) {
+
+          console.log(imageElem, 'htttttttttttttttttttttt')
+          // or
+          imageElem.remove(); // remove the image element completely
+        }
+      }
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
+  const deleteProImg = () => {
+
+    const deleteButtons = document.querySelectorAll('.close-button')
+    const productId = document.getElementsByName('product-id')[0].value
+
+    deleteButtons.forEach((button )=> {
+      button.addEventListener('click', async (event) => {
+        const imageIndex = event.target.dataset.imageIndex;
+        deleteImage(productId, imageIndex);
+      });
+    });
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+    function Validation() {
+
+       
+        let productName = document.getElementById("productName").value;
+
+        let longdescription = document.getElementById("longdescription").value;
+        let Qty = document.getElementById("Qty").value;
+        let price = document.getElementById("price").value;
+
+
+
+        let productNameRegex = /^\s*.*\S.*\s*$/;
+        let number = /^[1-9]\d*$/;
+        let descriptionRegex = /^(?!\s*$)[\s\S]{1,10}$/
+
+
+
+
+        let productNameAlert = document.getElementById("productNameAlert");
+        let qtyAlert = document.getElementById("qtyAlert");
+        let priceAlert = document.getElementById("priceAlert");
+
+
+        let longAlert = document.getElementById("longAlert");
+        let imgAlert = document.getElementById('imgAlert')
+
+        if (!productName.match(productNameRegex)) {
+            productNameAlert.innerHTML = "Name Not Valid";
+            return false;
+        } else if (!Qty.match(number)) {
+            qtyAlert.innerHTML = "Please Check Qty Again";
+            return false;
+        } else if (!price.match(number)) {
+            priceAlert.innerHTML = "Please Check Price Again";
+            return false;
+        }
+
+        else if (!longdescription.match(descriptionRegex)) {
+            longAlert.innerHTML = "Please Check about Again";
+            return false;
+        }
+
+        else {
+            return true;
+        }
+
+    }
+
+    
+
+   
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+////////////back
+        $(document).ready(function () {
+        $('#backbutton').click(function(e){
+            e.preventDefault();
+           
+
+            Swal.fire({
+                title: "Leave the page?",
+                text: "The Data will not be saved",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#088178",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "/admin/products";
+                    
+                }
+            });
+
+
+        });
+    });
+
+
+
+</script>

@@ -1,0 +1,325 @@
+<main class="main-wrap">
+    <header class="main-header navbar">
+        <div class="col-search">
+            <form class="searchform">
+                <div class="input-group">
+                    <input list="search_terms" type="text" class="form-control" placeholder="Search term">
+                    <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
+                </div>
+                <datalist id="search_terms">
+                    <option value="Products">
+                    <option value="New orders">
+                    <option value="Apple iphone">
+                    <option value="Ahmed Hassan">
+                </datalist>
+            </form>
+        </div>
+        <div class="col-nav">
+            <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i
+                    class="material-icons md-apps"></i> </button>
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link btn-icon" href="#">
+                        <i class="material-icons md-notifications animation-shake"></i>
+                        <span class="badge rounded-pill">3</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
+                </li>
+
+            </ul>
+        </div>
+    </header>
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Category List</h2>
+
+            </div>
+            <div>
+
+                <a href="/admin/addCategory" class="btn btn-primary btn-sm rounded">Create new</a>
+            </div>
+        </div>
+        <span>
+            {{#if catExistMsg}}
+            <div class="alert alert-danger mt-3 alert-dismissible fade {{#if catExistMsg}}show{{/if}}" role="alert">
+
+
+                {{catExistMsg}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {{/if}}
+            {{#if catEditMsg}}
+            <div class="alert alert-success mt-3 alert-dismissible fade {{#if catEditMsg}}show{{/if}}" role="alert">
+                {{catEditMsg}}
+                <span><button type="button" class="btn-close" data-bs-dismiss="alert"
+                        aria-label="Close"></button></span>
+            </div>
+            {{/if}}
+        </span>
+        <div class="card mb-4">
+            <header class="card-header">
+                <div class="row align-items-center">
+                    <div class="col col-check flex-grow-0">
+                        <div class="form-check ms-2">
+                            <input class="form-check-input" type="checkbox" value="">
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+                        <select class="form-select">
+                            <option selected>All category</option>
+                            <option>Electronics</option>
+                            <option>Clothes</option>
+                            <option>Automobile</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 col-6">
+                        <input type="date" value="02.05.2021" class="form-control">
+                    </div>
+                    <div class="col-md-2 col-6">
+                        <select class="form-select">
+                            <option selected>Status</option>
+                            <option>Active</option>
+                            <option>Disabled</option>
+                            <option>Show all</option>
+                        </select>
+                    </div>
+                </div>
+            </header> <!-- card-header end// -->
+
+
+            <!---category tab-->
+            {{#each category}}
+            <article class="itemlist">
+                <div class="row align-items-center">
+                    <div class="col col-check flex-grow-0">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="">
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-3 col-3 flex-grow-1 col-name jsutify-content-center text-align-center">
+                        <a class="itemside" href="#">
+                            <div class="d-flex aligin-items-center justify-content-center">
+                                <img src="/images/products/{{image.[0]}}" class="img-sm img-thumbnail" alt="Item">
+                            </div>
+
+                        </a>
+                    </div>
+                    <div class="col-lg-2 col-sm-2 col-2 flex-grow-1 col-name text-align-center">
+                        <a class="itemside" href="#">
+
+                            <div class="info">
+                                <h6 class="mb-0">{{this.category}}</h6>
+                            </div>
+                        </a>
+                    </div>
+                    {{!-- <div class="col-lg-2 col-sm-2 col-4 col-price"> <span>$76.99</span> </div> --}}
+
+                    <div class="col-lg-1 col-sm-1 col-1 col-status">
+                        {{#if isListed}}
+                        <span class="badge rounded-pill alert-success">Listed</span>
+                        {{else}}
+                        <span class="badge rounded-pill alert-danger">Unlisted</span>
+                        {{/if}}
+                    </div>
+                    <div class="col-lg-1 col-sm-1 col-1 col-date text-end">
+                        <a href="/admin/editCategory/{{this._id}}"
+                           
+                            class="btn btn-pill font-sm rounded btn-brand">
+                            <i class="material-icons md-edit"></i> Edit
+                        </a>
+                    </div>
+                    {{#if isListed}}
+                    <div class="col-lg-1 col-sm-1 col-1 col-date text-end">
+                        <a href="/admin/unlistCategory"
+                           id="listunlistrod" data-product-id="{{this._id}}"
+                            class="btn btn font-sm btn-light rounded">
+                            <i class="material-icons md-delete_forever"></i> Unlist
+                        </a>
+                    </div>
+                    {{else}}
+                    <div class="col-lg-1 col-sm-1 col-1 col-date text-end">
+                       
+                        <a href="/admin/unlistCategory"
+                           id="listunlistrod" data-product-id="{{this._id}}"
+                            class="btn btn font-sm btn-light rounded">
+                            <i class="material-icons md-delete_forever"></i> List
+                        </a>
+                    </div>
+                    {{/if}}
+                    <div class="col-lg-2 col-sm-2 col-4 col-action ">
+                        
+
+                        <a href="/admin/delete_category"
+                           id="deletecat" data-product-id="{{this._id}}"
+                            class="btn btn font-sm btn-light rounded">
+                            <i class="material-icons md-delete_forever"></i> Delete
+                        </a>
+                        
+                    </div>
+                </div> <!-- row .// -->
+            </article>
+            {{/each}}
+            <!---end category tab-->
+
+
+
+        </div> <!-- card-body end// -->
+        </div> <!-- card end// -->
+        <div class="pagination-area mt-30 mb-50">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-start">
+                    <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                    <li class="page-item"><a class="page-link" href="#">02</a></li>
+                    <li class="page-item"><a class="page-link" href="#">03</a></li>
+                    <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                    <li class="page-item"><a class="page-link" href="#">16</a></li>
+                    <li class="page-item"><a class="page-link" href="#"><i
+                                class="material-icons md-chevron_right"></i></a></li>
+                </ul>
+            </nav>
+        </div>
+    </section> <!-- content-main end// -->
+    <footer class="main-footer font-xs">
+        <div class="row pb-30 pt-15">
+            <div class="col-sm-6">
+                <script>
+                    document.write(new Date().getFullYear())
+                </script> ©, ConsoleHaven- Haven for Gamers .
+            </div>
+            <div class="col-sm-6">
+                <div class="text-sm-end">
+                    All rights reserved
+                </div>
+            </div>
+        </div>
+    </footer>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    ////////////delete product
+    $(document).ready(function () {
+        $(document).on('click', '#deletecat', function (e) {
+            e.preventDefault();
+            var id = $(this).data('product-id');
+            //var wishId = $(this).data('whishlist-id'); // Corrected variable name to wishId
+
+            // Store reference to $(this) in a variable for use inside AJAX success and error callbacks
+            var $this = $(this);
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#088178",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/admin/delete_category',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ id: id }),
+                        success: function (productData) {
+                            console.log("Product removed from Cart successfully");
+                            // If you want to remove the row from the table upon successful removal
+                            $this.closest('article').remove(); // Use $this instead of $(this)
+                            // swal("Removed from wishlist", "The product has been removed from your wishlist.", "success");
+                            {
+                                Swal.fire({
+                                    title: 'Removed!',
+                                    text: 'Product Succesfully Removed from Cart!!!',
+                                    icon: 'success',
+                                    confirmButtonText: 'Cool'
+                                })
+                            }
+
+
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error removing product from wishlist:", error);
+                            swal("Error", "Something went wrong. Please try again later.", "error");
+                        }
+                    });
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        icon: "success"
+                    });
+                }
+            });
+
+
+        });
+    });
+
+
+    /////block product
+
+    $(document).ready(function () {
+        $(document).on('click', '#listunlistrod', function (e) {
+            e.preventDefault();
+            var id = $(this).data('product-id');
+            //var wishId = $(this).data('whishlist-id'); // Corrected variable name to wishId
+
+            // Store reference to $(this) in a variable for use inside AJAX success and error callbacks
+            var $this = $(this);
+
+            Swal.fire({
+                title: "Are you sure?",
+                // text: "Do you want to block the Product?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#088178",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/admin/unlistCategory',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ id: id }),
+                        success: function (productData) {
+                            console.log("ProductBlocked");
+
+
+                            {
+                                Swal.fire({
+                                    title: 'Done!',
+                                    //text: 'Product Succesfully Blocked!!!',
+                                    icon: 'success',
+                                    confirmButtonText: 'Cool'
+                                }).then(() => window.location.reload())
+                            }
+
+
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error removing product from wishlist:", error);
+                            swal("Error", "Something went wrong. Please try again later.", "error");
+                        }
+                    });
+                    Swal.fire({
+                        title: "Done!",
+                        text: "Your file has been deleted.",
+                        icon: "success"
+                    });
+                }
+            });
+
+
+        });
+    });
+
+
+</script>

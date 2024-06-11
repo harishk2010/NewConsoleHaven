@@ -1,0 +1,85 @@
+<main class="main-wrap">
+    <section class="content-main">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-10">
+                <div class="content-header">
+
+
+                </div>
+            </div>
+            <div class="col-lg-8 mt-5 justify-content-center">
+
+                <div class="card">
+                    <div class="card-body">
+                        {{#if couponMsg}}
+                        <div class="alert alert-success mt-3 alert-dismissible fade {{#if couponMsg}}show{{/if}}"
+                            role="alert">
+                        
+
+                        {{couponMsg}}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {{/if}}
+                    {{#if couponExMsg}}
+                    <div class="alert alert-danger mt-3 alert-dismissible fade {{#if couponExMsg}}show{{/if}}"
+                        role="alert">
+                        {{couponExMsg}}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {{/if}}
+
+
+                    <!-- Vertical Form -->
+                    <form action="/admin/add_coupon" method="post" class="row g-3">
+                        <h5 class="content-title  ">Add New Coupon</h5>
+                        <div class="col-12">
+                            <label for="inputNanme4" class="form-label">Coupon Code</label>
+                            <input type="text" class="form-control" id="coupon-code" placeholder="Enter coupon code"
+                                name="code" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="inputEmail4" class="form-label">Discount (%)</label>
+                            <div class="input-group mb-3">
+
+                                <input type="text" class="form-control" name="percent" placeholder="Discount %..."
+                                    aria-label="Username" aria-describedby="basic-addon1" required>
+                                <span class="input-group-text" id="basic-addon1">%</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="expiry-date">Expiry Date</label>
+                            <input type="date" class="form-control" id="expiry-date" name="expDate" required>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Add
+                                Coupon</button>
+
+
+                            <a href="/admin/coupons" type="button" class="btn btn-primary"
+                                        id="backbutton">Back</a>
+                        </div>
+                    </form><!-- Vertical Form -->
+
+                </div>
+            </div>
+
+
+
+        </div>
+    </section> <!-- content-main end// -->
+    <footer class="main-footer font-xs">
+        <div class="row pb-30 pt-15">
+            <div class="col-sm-6">
+                <script>
+                    document.write(new Date().getFullYear())
+                </script> ©, Evara - HTML Ecommerce Template .
+            </div>
+            <div class="col-sm-6">
+                <div class="text-sm-end">
+                    All rights reserved
+                </div>
+            </div>
+        </div>
+    </footer>
+</main>

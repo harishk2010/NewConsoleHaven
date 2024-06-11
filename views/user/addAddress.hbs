@@ -1,0 +1,235 @@
+<main class="main">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html" rel="nofollow">Home</a>
+                <span></span> Pages
+                <span></span> Account
+            </div>
+        </div>
+    </div>
+    <section class="pt-50 pb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 m-auto">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="dashboard-menu">
+                                <ul class="nav flex-column" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link " id="dashboard-tab" data-bs-toggle="tab" href="/profile"
+                                            role="tab" aria-controls="dashboard" aria-selected="false"><i
+                                                class="fi-rs-settings-sliders mr-10"></i>Dashboard</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="orders-tab" href="/myorders" role="tab"
+                                            aria-controls="orders" aria-selected="false"><i
+                                                class="fi-rs-shopping-bag mr-10"></i>Orders</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="track-orders-tab" href="/wallet" role="tab"
+                                            aria-controls="track-orders" aria-selected="false"><i
+                                                class="fi-rs-shopping-cart-check mr-10"></i>Wallet</a>
+                                    </li>
+                                    {{!-- <li class="nav-item">
+                                        <a class="nav-link" id="track-orders-tab" href="#wallet-history" role="tab"
+                                            aria-controls="track-orders" aria-selected="false"><i
+                                                class="fi-rs-shopping-cart-check mr-10"></i>Wallet
+                                            History</a>
+                                    </li> --}}
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="address-tab" href="/addresses" role="tab"
+                                            aria-selected="true"><i class="fi-rs-marker mr-10"></i>My
+                                            Address</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="account-detail-tab" href="/edit_profile" role="tab"
+                                            aria-controls="account-detail" aria-selected="true"><i
+                                                class="fi-rs-user mr-10"></i>Account details</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="changepass-tab" href="/changepassword" role="tab"
+                                            aria-controls="password" aria-selected="true"><i
+                                                class="fi-rs-lock mr-10"></i>Change password</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="track-orders-tab" href="#referal" role="tab"
+                                            aria-controls="track-orders" aria-selected="false"><i
+                                                class="fi-rs-shopping-cart-check mr-10"></i>Referals</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="logout"><i class="fi-rs-sign-out mr-10"></i>Logout</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="tab-content dashboard-content">
+
+
+
+                                <div class="tab-pane fade show active" id="address" role="tabpanel"
+                                    aria-labelledby="address-tab">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <form action="/add_address" method="post">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="row gx-3">
+                                                            <div class="col-12 mb-3">
+                                                                <label class="form-label">Name</label>
+                                                                <input class="form-control" type="text"
+                                                                    placeholder="Enter your name" name="name" id="name">
+                                                                <p id="nameError" style="color: red;"></p>
+                                                            </div>
+                                                            <div class="col-lg-12 mb-3">
+                                                                <label class="form-label">Phone</label>
+                                                                <input class="form-control" type="tel"
+                                                                    placeholder="Enter your phone number" name="mobile"
+                                                                    id="mobile">
+                                                                <p id="mobileError" style="color: red;"></p>
+                                                            </div>
+                                                            <div class="col-lg-12 mb-3">
+                                                                <label class="form-label">Address line 1</label>
+                                                                <input class="form-control" type="text"
+                                                                    placeholder="Enter your address" name="address1"
+                                                                    id="address1">
+                                                                <p id="address1Error" style="color: red;"></p>
+                                                            </div>
+                                                            <div class="col-lg-12 mb-3">
+                                                                <label class="form-label">City</label>
+                                                                <input class="form-control" type="text"
+                                                                    placeholder="Enter your City" name="city" id="city">
+                                                                <p id="cityError" style="color: red;"></p>
+                                                                <div class="col-lg-12 mb-3">
+                                                                    <label class="form-label">State</label>
+                                                                    <input class="form-control" type="text"
+                                                                        placeholder="Enter your State" name="state"
+                                                                        id="state">
+                                                                    <p id="stateError" style="color: red;"></p>
+                                                                </div>
+                                                                <div class="col-lg-12 mb-3">
+                                                                    <label class="form-label">Pincode</label>
+                                                                    <input class="form-control" type="tel"
+                                                                        placeholder="Enter your Pincode" name="pin"
+                                                                        id="pincode">
+                                                                    <p id="pincodeError" style="color: red;"></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <br>
+                                                    <div>
+                                                        <span>
+                                                            <button class="btn btn-primary btn-sm" type="submit"
+                                                        id="submitButton">Save Address</button>
+                                                        </span>
+                                                        <span>
+                                                            <button type="button" class="btn btn-primary btn-sm"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#coupon">Close</button>
+                                                        </span>
+
+                                                    </div>
+                                                    <div>
+                                                        
+
+                                                    </div>
+                                                    
+                                                    
+                                            </form>
+                                        </div>
+
+
+                                    </div>
+                                   
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form[action="/add_address"]');
+        const submitButton = document.getElementById('submitButton');
+        const nameField = document.getElementById('name');
+        const mobileField = document.getElementById('mobile');
+        const address1Field = document.getElementById('address1');
+        const address2Field = document.getElementById('address2');
+        const cityField = document.getElementById('city');
+        const stateField = document.getElementById('state');
+        const pincodeField = document.getElementById('pincode');
+        const nameError = document.getElementById('nameError');
+        const mobileError = document.getElementById('mobileError');
+        const address1Error = document.getElementById('address1Error');
+        const cityError = document.getElementById('cityError');
+        const stateError = document.getElementById('stateError');
+        const pincodeError = document.getElementById('pincodeError');
+
+        form.addEventListener('submit', function(event) {
+            let isValid = true;
+
+            // Clear previous error messages
+            clearErrors();
+
+            if (nameField.value.trim() === '') {
+                isValid = false;
+                showError(nameError, 'Name is required.');
+            }
+
+            if (mobileField.value.trim() === '') {
+                isValid = false;
+                showError(mobileError, 'Phone number is required.');
+            } else if (!/^\d{10}$/.test(mobileField.value.trim())) {
+                isValid = false;
+                showError(mobileError, 'Phone number must be 10 digits.');
+            }
+
+            if (address1Field.value.trim() === '') {
+                isValid = false;
+                showError(address1Error, 'Address line 1 is required.');
+            }
+
+            if (cityField.value.trim() === '') {
+                isValid = false;
+                showError(cityError, 'City is required.');
+            }
+
+            if (stateField.value.trim() === '') {
+                isValid = false;
+                showError(stateError, 'State is required.');
+            }
+
+            if (pincodeField.value.trim() === '') {
+                isValid = false;
+                showError(pincodeError, 'Pincode is required.');
+            } else if (!/^\d{6}$/.test(pincodeField.value.trim())) {
+                isValid = false;
+                showError(pincodeError, 'Pincode must be 6 digits.');
+            }
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+
+        function showError(element, message) {
+            element.innerText = message;
+            element.style.color = 'red';
+        }
+
+        function clearErrors() {
+            nameError.innerText = '';
+            mobileError.innerText = '';
+            address1Error.innerText = '';
+            cityError.innerText = '';
+            stateError.innerText = '';
+            pincodeError.innerText = '';
+        }
+    });
+</script>

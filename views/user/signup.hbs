@@ -1,0 +1,261 @@
+<main class="main">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html" rel="nofollow">Home</a>
+                {{!-- <span></span> Pages --}}
+                <span></span> Register
+            </div>
+        </div>
+    </div>
+    <section class="pt-50 pb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 m-auto">
+                    <div class="row">
+                        <div class="col-lg-6 m-auto">
+                            <div class="login_wrap widget-taber-content p-30 background-white border-radius-5">
+                                <div class="padding_eight_all bg-white">
+                                    <div class="heading_s1">
+                                        <h3 class="mb-30">Create an Account</h3>
+                                    </div>
+                                    <form method="post" action="/signup" onsubmit="return Check_all(event)">
+
+                                        <div class="form-floating mb-3 input-control">
+                                            <input type="text" class="form-control" onkeyup="validatename()" id="name"
+                                                name="name" placeholder="name">
+                                            <label for="floatingInputUsername">Username</label>
+                                            <p class="text-danger" id="uname_err"></p>
+                                        </div>
+                                        <div class="form-floating mb-3 input-control">
+                                            <input type="email" class="form-control" onkeyup="validateEmail()"
+                                                id="email" placeholder="name@example.com" name="email">
+                                            <label for="email">Email</label>
+                                            <p class="text-danger" id="email_err"></p>
+                                        </div>
+
+                                        <div class="form-floating mb-3 input-control">
+                                            <input type="tel" class="form-control" onkeyup="validatemobile()" id="phone"
+                                                placeholder="Phone" name="phone">
+                                            <label for="phone">Phone</label>
+                                            <p class="text-danger" id="phone_err"></p>
+                                        </div>
+                                        <div class="form-floating mb-3 input-control">
+                                            <input type="password" class="form-control" onkeyup="validate_password()"
+                                                id="password" placeholder="Password" name="password">
+                                            <label for="Password">Password</label>
+                                            <p class="text-danger" id="pass_err"></p>
+                                        </div>
+                                        <div class="login_footer form-group">
+                                            <div class="chek-form">
+                                                <div class="custome-checkbox">
+                                                    <input class="form-check-input" type="checkbox" name="showPassword"
+                                                        id="showPasswordCheckbox" onchange="togglePasswordVisibility()">
+                                                    <label class="form-check-label"
+                                                        for="showPasswordCheckbox"><span>Show Password</span></label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-floating mb-3 input-control">
+                                            <input type="password" class="form-control" onchange="conformPassword()"
+                                                id="confirmPassword" placeholder="Password" name="confirmPassword">
+                                            <ul class="text-danger" id="repass_err"></ul>
+
+                                            <label for="confirmPassword">Confirm password</label>
+                                            <div class="error"></div>
+                                        </div>
+                                        <div class="login_footer form-group">
+                                            <div class="chek-form">
+                                                <div class="custome-checkbox">
+                                                    <input class="form-check-input" type="checkbox" name="showPassword2"
+                                                        id="showPasswordCheckbox2"
+                                                        onchange="togglePasswordVisibility2()">
+                                                    <label class="form-check-label"
+                                                        for="showPasswordCheckbox2"><span>Show Password</span></label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group text-center">
+                                            <button type="submit" class="btn btn-fill-out btn-block hover-up"
+                                                name="login">Submit &amp; Register</button>
+                                        </div>
+                                    </form>
+                                    {{!-- <div class="divider-text-center mt-15 mb-15">
+                                        <span> or</span>
+                                    </div>
+                                    <ul class="btn-login list_none text-center mb-15">
+                                        <li><a href="#" class="btn btn-facebook hover-up mb-lg-0 mb-sm-4">Login With
+                                                Facebook</a></li>
+                                        <li><a href="#" class="btn btn-google hover-up">Login With Google</a></li>
+                                    </ul>
+                                    <div class="text-muted text-center">Already have an account? <a href="/login">Sign
+                                            in now</a></div> --}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+<script>
+    const username = document.getElementById("name");
+    const email = document.getElementById("email");
+    const phone = document.getElementById("phone");
+    const password = document.getElementById("password");
+    const confirmPassword = document.getElementById("confirmPassword");
+
+    // Error message fields
+
+    const uname_err = document.getElementById("uname_err");
+    const email_err = document.getElementById("email_err");
+    const phone_err = document.getElementById("phone_err");
+    const pass_err = document.getElementById("pass_err");
+    const repass_err = document.getElementById("repass_err");
+
+    // User name field validation
+    function validatename() {
+        const name_value = username.value;
+        if (name_value.trim() === "") {
+            uname_err.innerHTML = "Please Enter a valid Name.";
+            uname_err.style.display = "block";
+            return false;
+        } else {
+            uname_err.style.display = "none";
+            uname_err.innerHTML = "";
+            return true;
+        }
+    }
+
+    const err = document.getElementById("invalid");
+    if (err) {
+        setTimeout(() => {
+            err.style.display = "none";
+        }, 3000);
+    }
+
+
+    function validatemobile() {
+        const mobileNumber = phone.value;
+        if (mobileNumber.length < 10) {
+            phone_err.innerHTML = "Enter a valid mobile number (10 digits)";
+            phone_err.style.display = "block";
+            return false;
+        } else {
+            phone_err.style.display = "none";
+            phone_err.innerHTML = "";
+            return true;
+        }
+    }
+
+
+    function validateEmail() {
+        const Email = email.value;
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(Email) || Email === "") {
+            email_err.innerHTML = "Enter a valid email";
+            email_err.style.display = "block";
+            return false;
+        } else {
+            email_err.style.display = "none";
+            email_err.innerHTML = "";
+            return true;
+        }
+    }
+
+
+
+    function validate_password() {
+        const Password = password.value;
+        const errors = [];
+        pass_err.innerHTML=""
+
+    if (!Password.match(/[a-z]/)) {
+        errors.push("Password must contain at least one lowercase letter.");
+    }
+    if (!Password.match(/[A-Z]/)) {
+        errors.push("Password must contain at least one uppercase letter.");
+    }
+    if (!Password.match(/\d/)) {
+        errors.push("Password must contain at least one digit.");
+    }
+    if (!Password.match(/[@$!%*?&]/)) {
+        errors.push("Password must contain at least one special character.");
+    }
+    if (Password.length < 8) {
+        errors.push("Password must be at least 8 characters long.");
+    }
+
+    if (errors.length > 0) {
+        //pass_err.innerHTML=`${errors}`
+       // pass_err.style.display="block"
+       // return errors;
+       errors.forEach((error)=>{
+        const li=document.createElement('li')
+        li.textContent=error
+        pass_err.appendChild(li)
+        });
+        return false
+       
+    }else{
+        pass_err.style.display="none"
+        pass_err.innerHTML = "";
+        return true;
+    }
+
+   
+    }
+
+
+    function conformPassword() {
+        const passwordValue = password.value;
+        const confirmPasswordValue = confirmPassword.value;
+
+        if (passwordValue !== confirmPasswordValue) {
+
+            repass_err.innerHTML = "Passwords must match";
+            repass_err.style.display = "block";
+            return false;
+        } else {
+            repass_err.style.display = "none";
+            repass_err.innerHTML = "";
+            return true;
+        }
+    }
+
+    function Check_all(e) {
+        if (!validatename() || !validateEmail() || !validatemobile() || !validate_password() || !conformPassword()) {
+            e.preventDefault()
+            return false;
+        } else {
+            return true
+        }
+    }
+    function togglePasswordVisibility() {
+        var passwordInput = document.getElementById('password');
+        var checkbox = document.getElementById('showPasswordCheckbox');
+
+        if (checkbox.checked) {
+            passwordInput.type = "text";
+        } else {
+            passwordInput.type = "password";
+        }
+    }
+
+    function togglePasswordVisibility2() {
+        var confirmPasswordInput = document.getElementById('confirmPassword');
+        var checkbox = document.getElementById('showPasswordCheckbox2');
+
+        if (checkbox.checked) {
+            confirmPasswordInput.type = "text";
+        } else {
+            confirmPasswordInput.type = "password";
+        }
+    }
+</script>
