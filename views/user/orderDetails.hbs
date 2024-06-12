@@ -210,9 +210,12 @@
                                                                         </dl>
                                                                         <dl class="dlist">
                                                                             <dt>Discount:</dt>
-                                                                            <dd>
+                                                                            <dd>{{#if myOrderDetails.couponUsed}}
                                                                                 <span class="text-success">-₹
                                                                                     {{offerprice}}</span>
+                                                                                    {{else}}
+                                                                                    <span class="text-success">-₹ 0</span>
+                                                                                    {{/if}}
                                                                             </dd>
                                                                         </dl>
                                                                         <dl class="dlist">
