@@ -34,14 +34,14 @@ const addCouponPage= async(req,res)=>{
 
     try {
         if (req.session.coupon) {
-            res.render("admin/addcoupon",{  couponMsg ,title:"Admin",layout:'adminlayout'});
+            res.render("admin/addCoupon",{  couponMsg ,title:"Admin",layout:'adminlayout'});
             req.session.coupon = false;
           } else if (req.session.exCoupon) {
             
-            res.render("admin/addcoupon", { couponExMsg ,title:"Admin",layout:'adminlayout'});
+            res.render("admin/addCoupon", { couponExMsg ,title:"Admin",layout:'adminlayout'});
             req.session.exCoupon = false;
           } else {
-            res.render("admin/addcoupon",{ couponExMsg ,title:"Admin",layout:'adminlayout'});
+            res.render("admin/addCoupon",{ couponExMsg ,title:"Admin",layout:'adminlayout'});
           }
     } catch (error) {
 
