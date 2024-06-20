@@ -14,6 +14,7 @@ const easyinvoice = require('easyinvoice');
 const userHelper = require('../../helpers/user_helper')
 const mongoose = require('mongoose')
 const ObjectId = require('mongoose')
+const Review= require('../../models/review')
 
 
 const cancelOrder = async (req, res) => {
@@ -389,12 +390,40 @@ const getInvoice = async (req, res) => {
         res.sendStatus(500);
     }
 };
+const addNewReviewPost=async(req, res) => {
+    try {
+         userData = req.session.user
+        const id       = userData._id
+        console.log(req.body,"req.bodyreq.bodyreq.body")
+        
+        const review = new Review({
+            userId      : id,
+            productId   : req.body.proId,
+            name        : req.body.name,
+            // rating      : req.body.rating,
+            comment     : req.body.comment, 
+            email       : req.body.email,
+            // date        : Date.now, 
+            is_default  : false,
+        })
+
+        const reviewData = await review.save()
+        console.log(reviewData)
+        res.redirect(`/productDetails/${req.body.proId}`)
+       
+    } catch (error) {
+        console.error('Error generating invoice:', error);
+        res.sendStatus(500);
+    }
+    
+}
 
 
 module.exports = {
     cancelOrder, cancelOneProduct,
     returnOrder,
     returnOneProduct,
-    getInvoice
+    getInvoice,
+    addNewReviewPost
 
 }

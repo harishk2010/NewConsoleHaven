@@ -3,7 +3,7 @@
         <div class="container">
             <div class="breadcrumb">
                 <a href="/">Home</a>
-                <span></span><a href="/shop" rel="nofollow">shop</a> 
+                <span></span><a href="/shop" rel="nofollow">shop</a>
                 <span></span> {{product.name}}
             </div>
         </div>
@@ -55,7 +55,7 @@
                                     <div class="clearfix product-price-cover">
                                         <div class="product-price primary-color float-left">
                                             <ins><span class="text-brand">₹{{product.price}}</span></ins>
-                                            <ins><span class="old-price font-md ml-15">₹{{  product.price}}</span></ins>
+                                            <ins><span class="old-price font-md ml-15">₹{{ product.price}}</span></ins>
                                             <span class="save-price  font-md color3 ml-15">25% Off</span>
                                         </div>
                                     </div>
@@ -118,30 +118,31 @@
 
                                             {{#if outOfStock}}
                                             <span id="outofstock">
-                                                <button id="outofstock-btn" class="btn btn-md " style="background-color: #dc3545;">Out of stock</button>
+                                                <button id="outofstock-btn" class="btn btn-md "
+                                                    style="background-color: #dc3545;">Out of stock</button>
                                             </span>
                                             {{else}}
                                             {{#if ProductExistInCart}}
 
                                             <span id="gocart">
-                                                 <button id="addcart-btn" onclick="window.location.href='/cart'"
-                                                class="btn btn-md">Go to cart</button>
+                                                <button id="addcart-btn" onclick="window.location.href='/cart'"
+                                                    class="btn btn-md">Go to cart</button>
 
 
                                             </span>
 
-                                           
+
 
                                             {{else}}
                                             <span id="addcart">
-                                                 <button id="addcart-btn" data-product-id="{{product._id}}"
-                                                class="button button-add-to-cart">Add to cart</button>
+                                                <button id="addcart-btn" data-product-id="{{product._id}}"
+                                                    class="button button-add-to-cart">Add to cart</button>
 
                                             </span>
                                             {{/if}}
 
 
-                                           
+
                                             {{/if}}
                                             <a aria-label="Add To Wishlist" class="action-btn hover-up"
                                                 href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
@@ -160,6 +161,110 @@
                                 </div>
                                 <!-- Detail Info -->
                             </div>
+                        </div>
+                        <div class="tab-pane" id="Reviews">
+                            <!--Comments-->
+                            <div class="comments-area">
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        {{#if reviewExist}}
+                                        <h4 class="mb-30"> REVIEWS</h4>
+                                        <div class="comment-list">
+                                            {{#each reviews}}
+                                            <div class="single-comment justify-content-between d-flex">
+                                                <div class="user justify-content-between d-flex">
+                                                    <div class="thumb text-center">
+                                                        <img src="/images/users/{{this.productImage}}" alt="user image"
+                                                            alt="">
+                                                        <h6><a href="#">{{this.name}}</a></h6>
+                                                        {{!-- <p class="font-xxs">Since 2012</p> --}}
+                                                    </div>
+                                                    <div class="desc">
+                                                        <div class="product-rate d-inline-block">
+                                                            <div class="product-rating" style="width:90%">
+                                                            </div>
+                                                        </div>
+                                                        <p>{{this.comment}}</p>
+                                                        <div class="d-flex justify-content-between">
+                                                            <div class="d-flex align-items-center">
+                                                                <p class="font-xs mr-30">{{formatDate this.createdAt}}
+                                                                </p>
+                                                                {{!-- <a href="#" class="text-brand btn-reply">Reply <i
+                                                                        class="fi-rs-arrow-right"></i> </a> --}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {{/each}}
+                                            <!--single-comment -->
+
+                                            <!--single-comment -->
+
+                                        </div>
+                                        {{else}}
+                                        <h4>No Reviews Yet...</h4>
+                                        {{/if}}
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!--comment form-->
+                            {{#if userCanReview}}
+                            <div class="comment-form">
+                                <h4 class="mb-15">Add a review</h4>
+                                <div class="product-rate d-inline-block mb-30">
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-8 col-md-12">
+                                        <form class="form-contact comment_form" action="/addReview" method="post"
+                                            id="commentForm">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <textarea class="form-control w-100" name="comment" id="comment"
+                                                            cols="30" rows="9" placeholder="Write Comment"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <input class="form-control" name="name" id="name" type="text"
+                                                            placeholder="Name" value="{{userData.name}}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <input class="form-control" name="email" id="email" type="email"
+                                                            placeholder="Email" value="{{userData.email}}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6" style="display: none;">
+                                                    <div class="form-group">
+                                                        <input class="form-control" name="proId" id="proId" type="text"
+                                                            placeholder="" value="{{product._id}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="submit" class="button button-contactForm">Submit
+                                                    Review</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            {{else}}
+                            <div class="comment-form">
+                                <h4 class="mb-15">Purchase and review our product</h4>
+                                <div class="product-rate d-inline-block mb-30">
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-8 col-md-12">
+
+                                    </div>
+                                </div>
+                            </div>
+                            {{/if}}
                         </div>
 
                         <div class="banner-img banner-big wow fadeIn f-none animated mt-50">
@@ -205,11 +310,30 @@
 
 
                     } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: result.message,
-                        })
+                        if (result.message) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: result.message,
+
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Login Required',
+                                showCancelButton: true,
+                                confirmButtonText: 'Login',
+
+
+                                confirmButtonColor: "#088178",
+                                cancelButtonColor: "#d33",
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/login';
+                                }
+                            })
+                        }
 
                     }
                 },

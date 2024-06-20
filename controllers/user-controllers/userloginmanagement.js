@@ -1,11 +1,14 @@
 const { User } = require('../../models/userSchema')
 const { Category } = require('../../models/categorySchema')
 const { Product } = require('../../models/productsSchema')
-const Cart=require('../../models/cart')
+const Cart = require('../../models/cart')
 const userHelper = require('../../helpers/user_helper')
 const argon2 = require('argon2')
 const Wishlist = require('../../models/wishlist')
 const mongoose = require('mongoose')
+const Review = require('../../models/review')
+const Order = require('../../models/order')
+const ObjectId=mongoose.Types.ObjectId
 
 let otp
 let userotp
@@ -18,10 +21,10 @@ let userData
 const gethome = async (req, res) => {
 
     try {
-     
+
         //
-        let userData=req.session.user
-        
+        let userData = req.session.user
+
 
 
         const catagories = await Category.find({ isListed: true }).lean()
@@ -47,11 +50,11 @@ const gethome = async (req, res) => {
             }
         ])
         //   console.log(produts)
-        res.render('user/index', { products, catagories,userData,  layout: 'layout' })
+        res.render('user/index', { products, catagories, userData, layout: 'layout' })
 
 
     } catch (error) {
-       console.log(error.message);
+        console.log(error.message);
         res.status(500).send("Internal Server Error");
     }
 }
@@ -91,7 +94,7 @@ const showloginpage = async (req, res) => {
         }
 
     } catch (error) {
-       console.log(error.message);
+        console.log(error.message);
         res.status(500).send("Internal Server Error");
     }
 }
@@ -116,7 +119,7 @@ const dologin = async (req, res) => {
                     req.session.user = userData
 
                     res.redirect('/')
-                   
+
                 } else {
                     userData = null
                     req.session.userBlocked = true
@@ -133,7 +136,7 @@ const dologin = async (req, res) => {
         }
 
     } catch (error) {
-       console.log(error.message);
+        console.log(error.message);
         res.status(500).send("Internal Server Error");
     }
 }
@@ -150,7 +153,7 @@ const doLogout = async (req, res) => {
             res.redirect("/login");
         })
         userData = null
-        
+
     } catch (error) {
         console.log(error.message);
     }
@@ -160,7 +163,7 @@ const showsigninpage = async (req, res) => {
     try {
         res.render('user/signup')
     } catch (error) {
-       console.log(error.message);
+        console.log(error.message);
         res.status(500).send("Internal Server Error");
     }
 }
@@ -182,7 +185,7 @@ const dosignup = async (req, res) => {
         }
 
     } catch (error) {
-       console.log(error.message);
+        console.log(error.message);
         res.status(500).send("Internal Server Error");
 
     }
@@ -192,7 +195,7 @@ const getotppage = async (req, res) => {
     try {
         res.render('user/sotp')
     } catch (error) {
-       console.log(error.message);
+        console.log(error.message);
         res.status(500).send("Internal Server Error");
     }
 }
@@ -215,9 +218,9 @@ const submitotp = async (req, res) => {
         res.json({ status: true })
 
         console.log(user)
-       // res.redirect('/login')
+        // res.redirect('/login')
     } else {
-       // res.redirect('/submit_otp')
+        // res.redirect('/submit_otp')
         res.json({ status: false })
     }
 
@@ -228,52 +231,119 @@ const resendOtp = async (req, res) => {
         res.redirect('/submit_otp')
 
     } catch (error) {
-       console.log(error.message);
+        console.log(error.message);
         res.status(500).send("Internal Server Error");
     }
 }
 
 ////detailed product view
 const getproducts = async (req, res) => {
-    userData=req.session.user
     try {
+        const userData = req.session.user
         const item = req.params.id
-        console.log(item)
-        
-
+        // const allUsers=await User.aggregate()
         const product = await Product.findById(item).lean()
-      let ProductExistInCart
-      let outOfStock
-        const ProductExist= await Cart.find({
-            userId:userData._id ,
-             product_Id:item
-            })
-            console.log(ProductExist)
-            if(ProductExist.length===0){
-                ProductExistInCart=false
-            }else{
-                ProductExistInCart=true
-            }
-            if(product.stock===0){
-                outOfStock=true
-
-            }
-        console.log(ProductExistInCart)
+        let ProductExistInCart
+        let outOfStock
         await Product.updateOne(
             {
                 _id: item
             },
             {
-                $inc:{
-                    popularity:1
+                $inc: {
+                    popularity: 1
                 }
             }
         )
-       
-        res.render('user/productDetails', { product,outOfStock, ProductExistInCart,userData, layout: 'layout' })
+        if (product.stock === 0) {
+            outOfStock = true
+
+        }
+        let reviews = await Review.aggregate([
+            {
+                $match: {
+                    productId: item
+                }
+            },
+            {
+                $lookup: {
+                    from: "users", // Correct collection name, typically it's plural
+                    localField: "userId",
+                    foreignField: "_id",
+                    as: "user"
+                }
+            },
+            {
+                $unwind: "$user"
+            },
+            
+            {
+                $project: {
+                    _id: 1,
+                    name:1,
+                    isListed:1,
+                    comment:1,
+                    user:1,
+                    productImage: { $arrayElemAt: ["$user.image", 0] }
+
+                }
+            }
+        ]);
+        
+        console.log(reviews);
+        
+        
+
+            console.log(reviews)
+            let reviewExist = true
+            if (reviews.length == 0) {
+                reviewExist = false
+            }
+        if (userData) {
+            const ProductExist = await Cart.find({
+                userId: userData._id,
+                product_Id: item
+            })
+            console.log(ProductExist)
+            if (ProductExist.length === 0) {
+                ProductExistInCart = false
+            } else {
+                ProductExistInCart = true
+            }
+            /////
+             
+            const Orders = await Order.find({ userId:(userData._id), status: "Delivered" }, { product: 1, _id: 0 })
+
+            let userCanReview = false;
+            for(let i of Orders){
+            
+                for(let j of i.product){
+                    console.log(j.name)
+                    if(j.name == product.name){
+                        console.log("I found " , j.name)
+                        userCanReview = true
+                    }
+                }
+            }
+    
+              console.log(userCanReview)
+            ////
+
+            console.log(ProductExistInCart)
+
+
+            res.render('user/productDetails', { product, outOfStock,reviewExist, ProductExistInCart, userData,ProductExist,userCanReview,reviews ,layout: 'layout' })
+        }
+        else {
+            res.render('user/productDetails', { product,reviews, reviewExist,outOfStock, ProductExistInCart: false })
+
+        }
+
+
+
 
     } catch (error) {
-       console.log(error.message);
+        console.log(error.message);
         res.status(500).send("Internal Server Error");
 
     }
@@ -287,7 +357,7 @@ const aboutpage = async (req, res) => {
         res.render('user/about')
 
     } catch (error) {
-       console.log(error.message);
+        console.log(error.message);
         res.status(500).send("Internal Server Error");
 
     }

@@ -42,7 +42,7 @@ app.use(cookieParser());
 app.use(session({
     secret: process.env.SESSION_KEY ,
     saveUninitialized: true,
-    cookie: { maxAge: 600000000 },
+    cookie: { maxAge: 600000000  },
     resave: false
 }));
 app.use(nocache());
@@ -77,7 +77,7 @@ app.use((err, req, res, next) => {
     if (err.status === 404) {
         res.render('404', { layout: 'emptyLayout' });
     } else {
-        res.render('error'); 
+        res.render('error',{layout : 'emptyLayout'}); 
     }
 });
 

@@ -34,13 +34,10 @@ const { loadCheckoutPage, placeorder, orderSuccess , validateCoupon , removeCoup
 
 const { showWishlistPage, addToWishList, removeFromWishList } = require('../controllers/user-controllers/wishlistManagement')
 
-const { getProduct,
-    productSearch,
-    sortProductByName,
-    sortProductByPrice, searchProducts , getProductsPage , sortProductByArrival , sortProductByPopularity } = require('../controllers/user-controllers/shopManagement')
+const { getProduct, 
+    searchAndSort  } = require('../controllers/user-controllers/shopManagement')
 
-const { catFilter, categoryFilter, } = require("../controllers/user-controllers/category");
-const { cancelOrder,returnOrder, cancelOneProduct , returnOneProduct,getInvoice}= require('../controllers/user-controllers/ordercontroller')
+const { cancelOrder,returnOrder, cancelOneProduct , returnOneProduct,getInvoice , addNewReviewPost}= require('../controllers/user-controllers/ordercontroller')
 
 var router = express.Router();
 const Upload = require("../multer/user_multer")
@@ -48,7 +45,8 @@ const Upload = require("../multer/user_multer")
 /* GET home page. */
 router.get('/', gethome);
 
-router.get('/productDetails/:id', logedin, isBlocked, getproducts)
+router.get('/productDetails/:id', getproducts)
+router.post('/addReview', logedin, isBlocked, addNewReviewPost)
 
 ///login and logout
 
@@ -100,18 +98,7 @@ router.get('/orderPlaced', logedin, isBlocked, orderSuccess)
 router.get('/orderDetails/:id', logedin, isBlocked, orderDetails)
 router.post('/cancelorder/:id', cancelorder)
 router.post('/verifyPayment', logedin, isBlocked, verify)
-router.post('/handle-failure', (req, res) => {
-    const { error, payment_method, order_id } = req.body;
-    console.error('Payment failed:', error);
 
-    // Update the order status to 'failed' in the database
-    updateOrderStatus(order_id, 'failed').then(() => {
-        res.json({ status: 'failed', message: 'Payment failed and order status updated' });
-    }).catch(err => {
-        console.error('Error updating order status:', err);
-        res.status(500).json({ status: 'error', message: 'Failed to update order status' });
-    });
-});
 
 // router.post('/returnorder/:id',returnOrder)
 router.post('/cancelOneProduct', cancelOneProduct)
@@ -144,23 +131,7 @@ router.post('/removeFromWishList', logedin, isBlocked, removeFromWishList)
 
 /////// shop
 router.get('/shop', getProduct)
-router.post('/shop', getProductsPage);
-router.post('/products_filter', productSearch)
-router.post('/sort_product_name', sortProductByName)
-router.post('/sort_product_price', sortProductByPrice)
-router.post('/sort_product_arrivals',sortProductByArrival)
-router.post('/sort_product_popularity',sortProductByPopularity)
-
-
-
-
-router.get("/search", searchProducts)
-
-router.get('/category_fil', catFilter)
-router.post('/category_fil', catFilter)
-
-router.get('/category', categoryFilter)
-
+router.post('/search',searchAndSort)
 
 /////////// other pages
 router.get('/about', aboutpage)

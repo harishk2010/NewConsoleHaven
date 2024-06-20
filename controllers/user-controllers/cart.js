@@ -81,21 +81,92 @@ const loadCartPage = async (req, res) => {
     }
 }
 
+// const addToCart = async (req, res) => {
+//     try {
+//         let userData = req.session.user;
+//         if(!userData){
+//             return res.json({ success:false , message:"Login Required"})
+//            }
+//         console.log("User ID:", userData._id);
+//         const data = req.body;
+//         console.log("Request Body:", data);
+//         const quantity = parseInt(req.body.quantity, 10);
+//         console.log("Quantity:", quantity);
+
+       
+//         if (!data.prodId) {
+//             return res.status(400).json({ success: false, message: 'Invalid product ID' });
+//         }
+
+        
+//         if (quantity <= 0) {
+//             return res.json({ success: false, message: 'Quantity cannot be Zero or Negative!!!' });
+//         }
+
+//         const sampProd = await Product.findOne({ _id: data.prodId }).lean();
+//         console.log("Product Data:", sampProd);
+
+//         if (!sampProd) {
+//             return res.status(404).json({ success: false, message: 'Product not found' });
+//         }
+
+//         const ProductExist = await Cart.find({
+//             userId: userData._id,
+//             product_Id: data.prodId
+//         }).lean();
+//         console.log("Product Exist in Cart:", ProductExist);
+
+//         if (ProductExist.length > 0) {
+//             return res.json({ success: false, message: 'Product already exists in cart' });
+//         }
+
+//         const cartData = await Cart.findOneAndUpdate(
+//             {
+//                 userId: userData._id,
+//                 product_Id: data.prodId
+//             },
+//             {
+//                 quantity: quantity,
+//                 price: sampProd.price,
+//                 value: sampProd.price * quantity
+//             },
+//             { new: true, upsert: true }
+//         );
+
+//         console.log("Cart Data:", cartData);
+
+//         if (cartData) {
+//             res.json({
+//                 success: true,
+//                 message: "Product added to cart",
+//                 cartItem: cartData
+//             });
+//         } else {
+//             res.status(500).json({ success: false, message: 'Failed to add product to cart' });
+//         }
+//     } catch (error) {
+//         console.log(error.message);
+//         res.status(500).send("Internal Server Error");
+//     }
+// };
 const addToCart = async (req, res) => {
     try {
         let userData = req.session.user;
+        if (!userData) {
+            console.log("userdata..............")
+            return res.status(401).json({ success: false, message: "Login Required" });
+        }
+
         console.log("User ID:", userData._id);
         const data = req.body;
         console.log("Request Body:", data);
         const quantity = parseInt(req.body.quantity, 10);
         console.log("Quantity:", quantity);
 
-       
         if (!data.prodId) {
             return res.status(400).json({ success: false, message: 'Invalid product ID' });
         }
 
-        
         if (quantity <= 0) {
             return res.json({ success: false, message: 'Quantity cannot be Zero or Negative!!!' });
         }

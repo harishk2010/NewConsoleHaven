@@ -5,6 +5,7 @@ const logedin = async (req, res, next) => {
     try {
         if (!req.session.user) {
             res.redirect('/login')
+            
         }
         else next()
 
