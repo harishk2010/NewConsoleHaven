@@ -290,6 +290,7 @@
     let newTotal
     let subTotal
     let updateWallet
+    let ct=0
 
 
     const paymentOption = document.querySelectorAll('input[name="payment_option"]');
@@ -354,7 +355,7 @@
 
     const Cod = async () => {
         const selectAddress = document.querySelector('#selectedAddress').value
-        const subTotal = Number(document.getElementsByName('subTotal')[0].value)
+        const subTotal = Number(document.getElementsByName('subTotal')[0].value) 
 
         const datas = await fetch('/placeorder', {
             method: 'POST',
@@ -394,12 +395,17 @@
     }
 
     const online = () => {
-        subTotal = Number(document.getElementsByName('subTotal')[0].value)
+        if(ct===0) {
+            subTotal = Number(document.getElementsByName('subTotal')[0].value) + 50
+        }else{
+            subTotal = Number(document.getElementsByName('subTotal')[0].value) 
+        }
+        
 
 
         var options = {
             "key": "rzp_test_OsDtnewxAfAwm0", // Enter the Key ID generated from the Dashboard
-            "amount": subTotal * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "amount": (subTotal)* 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
             "currency": "INR",
             "image": "/images/logo/Logo_CH.png",
 
@@ -461,9 +467,34 @@
 
 
     let couponStatus
-    let originalSubTotal = Number(document.getElementsByName('subTotal')[0].value);
+    let originalSubTotal = Number(document.getElementsByName('subTotal')[0].value) ;
 
+const validateCoupon = async () => {
+    couponEl = document.getElementById('copon').value;
+    subTotal = Number(document.getElementsByName('subTotal')[0].value);
+
+    console.log(couponEl);
+    console.log('heloooo from validate coupon...............');
+    const response = await fetch('/validate_coupon', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            couponVal: couponEl,
+            subTotal: subTotal
+        })
+    });
+
+    console.log('hiiiii from coupon status........;;;;;;');
+    couponData = await response.json();
+    console.log(couponData);
+
+    
+};
     const toggleCoupon = async () => {
+        ct+=1
+        console.log(ct,"ctttttttttttttttttttttttttttt")
          couponEl = document.getElementById('copon').value;
          currentStatus = document.getElementById('couponBtn').innerText.trim();
          endpoint = currentStatus === 'Apply' ? '/apply_coupon' : '/remove_coupon';
@@ -490,14 +521,19 @@
         const sCoponMsg = document.getElementById('sCoponMsg');
 
         if (couponData.status === 'invalid') {
+            ct=0
             setCouponStatus('Invalid coupon', couponMsg);
         } else if (couponData.status === 'expired') {
+            ct=0
             setCouponStatus('Coupon has expired!', couponMsg);
         } else if (couponData.status === 'already_used') {
+            ct=0
             setCouponStatus('Coupon already used!', couponMsg);
         } else if (couponData.status === 'not_used') {
+            ct=0
             setCouponStatus('Coupon not used yet!', couponMsg);
         } else if (couponData.status === 'removed') {
+            
             setCouponStatus('Coupon removed successfully', couponMsg);
             document.getElementById('couponBtn').innerHTML = '<i class="fi-rs-label mr-10"></i>Apply';
         } else if (couponData.status === 'applied') {
@@ -506,8 +542,8 @@
         }
 
         if (couponData.status === 'applied' || couponData.status === 'removed') {
-            document.getElementById('new_sub_total').innerHTML = `<strong>${couponData.newTotal}</strong>`;
-            document.getElementsByName('subTotal')[0].value = couponData.newTotal;
+            document.getElementById('new_sub_total').innerHTML = `<strong>${couponData.newTotal + 50}</strong>`;
+            document.getElementsByName('subTotal')[0].value = couponData.newTotal + 50;
             document.getElementById('copoun_code').innerHTML = `<small>${couponEl}</small>`;
             document.getElementById('discount_amt').innerHTML = `<span class="text-success">-${couponData.discountAmt}</span>`;
         }

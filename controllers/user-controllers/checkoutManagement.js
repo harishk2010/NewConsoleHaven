@@ -197,7 +197,7 @@ const placeorder = async (req, res) => {
                     total: totalamount+50,
                     paymentMethod: payMethod,
                     discountAmt: req.body.couponData.discountAmt,
-                    amountAfterDscnt: req.body.couponData.newTotal,
+                    amountAfterDscnt: req.body.couponData.newTotal+50,
                     coupon: req.body.couponName,
                     couponUsed: true
                     
@@ -267,7 +267,7 @@ const placeorder = async (req, res) => {
 
             if (payMethod === 'razorpay') {
 
-                const amount = req.body.amount
+                const amount = req.body.amount 
 
                 let instance = new Razorpay({
                     key_id: "rzp_test_OsDtnewxAfAwm0",
@@ -275,7 +275,7 @@ const placeorder = async (req, res) => {
 
                 })
                 const order = await instance.orders.create({
-                    amount: amount * 100,
+                    amount: amount * 100 ,
                     currency: 'INR',
                     receipt: 'Harish',
 
@@ -307,7 +307,7 @@ const placeorder = async (req, res) => {
                         {
                             $push: {
                                 history: {
-                                    amount: req.body.couponData.newTotal + 50,
+                                    amount: req.body.couponData.newTotal +50,
                                     status: 'debited',
                                     date: Date.now()
                                 }
@@ -370,6 +370,8 @@ const validateCoupon = async (req, res) => {
             res.json('invalid');
         } else if (coupon.expiryDate < new Date()) {
             res.json('expired');
+        }else if (subTotal < coupon.minPurchase) {
+            res.json('Minimum Amount Required');
         } else {
             const couponId = coupon._id;
             const discount = coupon.discount;
@@ -380,7 +382,7 @@ const validateCoupon = async (req, res) => {
             if (isCpnAlredyUsed) {
                 res.json('already used');
             } else {
-                await Coupon.updateOne({ _id: couponId }, { $push: { usedBy: userId } });
+                //await Coupon.updateOne({ _id: couponId }, { $push: { usedBy: userId } });
 
                 const discnt = Number(discount);
                 const discountAmt = (subTotal * discnt) / 100;
@@ -412,12 +414,17 @@ const applyCoupon = async (req, res) => {
             return res.json({ status: 'expired' });
         } else if (coupon.usedBy.includes(userId)) {
             return res.json({ status: 'already_used' });
+        } else if (subTotal < coupon.minPurchase) {
+            return res.json({ status: 'min_purchase_not_met' });
         } else {
             // Add user ID to usedBy array
             await Coupon.updateOne({ _id: coupon._id }, { $push: { usedBy: userId } });
 
             // Calculate the new total by subtracting the discount amount
-            const discountAmt = (subTotal * coupon.discount) / 100;
+            let discountAmt = (subTotal * coupon.discount) / 100;
+            if (discountAmt > coupon.maxDiscount) {
+                discountAmt = coupon.maxDiscount;
+            }
             const newTotal = subTotal - discountAmt;
 
             return res.json({

@@ -52,11 +52,16 @@
                 </div>
                 <div class="header-right">
                     <div class="search-style-2">
-                        
-                            <input type="text" onkeyup="searchProducts()" id="searchInput" name="search" class="form-control"
-                                placeholder="Search for items...">
-                                {{!-- <button id="searchButton">Search</button> --}}
-                        
+
+                        <input type="text"  onkeyup="searchProducts()" id="searchInput" name="search"
+                            class="form-control" placeholder="Search for items...">
+
+                        {{!-- <form action="/search" onchange="searchProducts()" method="get" id="searchInput" class="search-form">
+                            <input type="text" name="query" placeholder="Search..." >
+                            <button type="submit">Search</button>
+                        </form> --}}
+                        {{!-- <button id="searchButton">Search</button> --}}
+
                     </div>
                     <div class="header-action-right">
                         <div class="header-action-2">
@@ -130,9 +135,7 @@
                                     <a href="/about">About</a>
                                 </li>
 
-                                <li>
-                                    <a href="page-contact.html">Contact</a>
-                                </li>
+                               
                             </ul>
                         </nav>
                     </div>
@@ -146,15 +149,15 @@
                         <div class="header-action-icon-2">
                             <a href="/wishlist">
                                 <img alt="Evara" src="assets/imgs/theme/icons/icon-heart.svg">
-                                <span class="pro-count white">10</span>
+                                <span class="pro-count white">{{wishCount}}</span>
                             </a>
                         </div>
                         <div class="header-action-icon-2">
                             <a class="mini-cart-icon" href="/cart">
                                 <img alt="Evara" src="assets/imgs/theme/icons/icon-cart.svg">
-                                <span class="pro-count white">2</span>
+                                <span class="pro-count white">{{wishCount}}</span>
                             </a>
-                            <div class="cart-dropdown-wrap cart-dropdown-hm2">
+                            {{!-- <div class="cart-dropdown-wrap cart-dropdown-hm2">
                                 <ul>
                                     <li>
                                         <div class="shopping-cart-img">
@@ -192,7 +195,7 @@
                                         <a href="shop-checkout.html">Checkout</a>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="header-action-icon-2 d-block d-lg-none">
                             <div class="burger-icon burger-icon-white">
@@ -245,3 +248,6 @@
         height: 3rem !important;
     }
 </style>
+
+{{!--
+<script src="/public/javascripts/products.js"></script> --}}

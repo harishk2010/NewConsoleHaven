@@ -1,19 +1,11 @@
 const { Product } = require('../../models/productsSchema') 
-const { Category } = require('../../models/categorySchema')
 const { User } = require('../../models/userSchema')
-const Wishlist = require('../../models/wishlist')
 const { Address } = require('../../models/addressSchema')
 const Coupon = require('../../models/couponSchema')
-
 const Order = require('../../models/order')
 const moment  = require('moment')
-const pdfkit  = require('pdfkit')
-const fs      = require('fs')
-const path = require('path');
 const easyinvoice = require('easyinvoice');
-const userHelper = require('../../helpers/user_helper')
 const mongoose = require('mongoose')
-const ObjectId = require('mongoose')
 const Review= require('../../models/review')
 
 

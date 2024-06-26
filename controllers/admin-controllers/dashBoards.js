@@ -1,27 +1,67 @@
 const moment = require('moment');
 const Sale = require('../../models/order');
 const Order = require('../../models/order');
-const PDFDocument = require('pdfkit')
-const hbs = require('hbs')
-const Handlebars = require('handlebars')
-const {Product}= require('../../models/productsSchema')
-const {Category} = require('../../models/categorySchema')
-
-// const {SubCategory} = require('../../models/subCategorySchema')
-
+const PDFDocument = require('pdfkit');
+const hbs = require('hbs');
+const Handlebars = require('handlebars');
+const { Product } = require('../../models/productsSchema');
+const { Category } = require('../../models/categorySchema');
 
 let months = [];
 let odersByMonth = [];
 let revnueByMonth = [];
 let totalRevnue = 0;
 let totalSales = 0;
+let categories = [];
+let revenues = [];
 
 const loadDashboard = async (req, res) => {
     try {
-        const sales = await Sale.find({}).lean();
-        //console.log(sales)
+        const categoryRevenue = await Order.aggregate([
+            { $unwind: "$product" },
+            {
+                $lookup: {
+                    from: "products",
+                    localField: "product._id",
+                    foreignField: "_id",
+                    as: "productDetails"
+                }
+            },
+            { $unwind: "$productDetails" },
+            {
+                $group: {
+                    _id: "$productDetails.category",
+                    totalRevenue: { $sum: { $multiply: ["$product.quantity", "$productDetails.price"] } }
+                }
+            },
+            {
+                $lookup: {
+                    from: "category",
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "categoryDetails"
+                }
+            },
+            { $unwind: "$categoryDetails" },
+            {
+                $project: {
+                    _id: 0,
+                    category: "$categoryDetails.category",
+                    totalRevenue: 1
+                }
+            },
+            { $sort: { totalRevenue: -1 } }
+        ]);
 
-        console.log(sales, 'salessssssssssssssssss');
+        categories = categoryRevenue.map(item => item.category);
+        revenues = categoryRevenue.map(item => item.totalRevenue);
+
+        console.log(categories);
+        console.log("//////////////////////////////////////////////////////////", categoryRevenue);
+
+        const sales = await Sale.find({}).lean();
+
+        // console.log(sales, 'salessssssssssssssssss');
 
         const salesByMonth = {};
 
@@ -67,19 +107,32 @@ const loadDashboard = async (req, res) => {
         const thisMonthOrder = odersByMonth[odersByMonth.length - 1];
         const thisMonthSales = revnueByMonth[revnueByMonth.length - 1];
 
-    let bestSellings= await Product.find().sort({bestSelling:-1}).limit(5).lean()
-    let popuarProducts= await Product.find().sort({popularity:-1}).limit(5).lean()
-    let bestSellingCategory= await Category.find().sort({bestSelling:-1}).limit(5).lean()
+        let bestSellings = await Product.find().sort({ bestSelling: -1 }).limit(5).lean();
+        let popuarProducts = await Product.find().sort({ popularity: -1 }).limit(5).lean();
+        let bestSellingCategory = await Category.find().sort({ bestSelling: -1 }).limit(5).lean();
 
-        console.log(thisMonthOrder, thisMonthSales);
+        // console.log(thisMonthOrder, thisMonthSales);
 
-        console.log(months);
-        console.log(odersByMonth);
-        console.log(revnueByMonth);
-        console.log(totalRevnue);
-        console.log(totalSales);
+        // console.log(months);
+        // console.log(odersByMonth);
+        // console.log(revnueByMonth);
+        // console.log(totalRevnue);
+        // console.log(totalSales);
 
-        res.render('admin/dashBoard', { revnueByMonth,bestSellingCategory,bestSellings,popuarProducts, months, odersByMonth, totalRevnue, totalSales, thisMonthOrder, thisMonthSales, layout: 'adminlayout' });
+        res.render('admin/dashBoard', {
+            revnueByMonth,
+            bestSellingCategory,
+            bestSellings,
+            popuarProducts,
+            months,
+            odersByMonth,
+            totalRevnue,
+            categoryRevenue,
+            totalSales,
+            thisMonthOrder,
+            thisMonthSales,
+            layout: 'adminlayout'
+        });
     } catch (error) {
         console.error('Error loading dashboard:', error);
         res.status(500).send('Internal Server Error');
@@ -98,9 +151,9 @@ const getSales = async (req, res) => {
                 $gte: startDate,
                 $lte: endDate,
             },
-            status: 'Delivered' // Filter by status
+            status: 'Delivered'
         }).sort({ date: 'desc' });
-        console.log(orders)
+        console.log(orders);
 
         const formattedOrders = orders.map((order) => ({
             date: moment(order.date).format('YYYY-MM-DD'),
@@ -144,7 +197,9 @@ const getChartData = (req, res) => {
         res.json({
             months: months,
             revnueByMonth: revnueByMonth,
-            odersByMonth: odersByMonth
+            odersByMonth: odersByMonth,
+            cat: categories,
+            revenue: revenues
         });
     } catch (error) {
         console.error('Error fetching chart data:', error);
@@ -154,7 +209,6 @@ const getChartData = (req, res) => {
 
 module.exports = {
     loadDashboard,
-    // currentMonthOrder,
     getSales,
     getChartData,
-}
+};

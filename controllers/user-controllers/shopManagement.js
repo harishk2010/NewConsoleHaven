@@ -164,7 +164,9 @@ const searchAndSort= async (req, res) => {
     // Construct the match stage
     const matchStage = { $match: {} };
     if (searchQuery) {
-        matchStage.$match.name = { $regex: searchQuery, $options: 'i' };
+         matchStage.$match.name = { $regex: searchQuery, $options: 'i' };
+       // matchStage.$match.name = { $regex: ".*" + searchQuery + ".*", $options: "i"  };
+
     }
     if (categoryFilter) {
         matchStage.$match.category = new mongoose.Types.ObjectId(categoryFilter);
@@ -186,13 +188,13 @@ const searchAndSort= async (req, res) => {
             sortStage.$sort.name = -1;
             break;
         case 'newArrivals':
-            sortStage.$sort.createdAt = -1;
+            sortStage.$sort.createdOn = -1;
             break;
         case 'popularity':
-            sortStage.$sort.popularity = -1; // Assuming there's a popularity field
+            sortStage.$sort.popularity = -1; 
             break;
         default:
-            sortStage.$sort.createdAt = -1; // Default sort by new arrivals
+            sortStage.$sort.createdOn = 1; 
     }
 
     const skipStage = { $skip: (page - 1) * limit };

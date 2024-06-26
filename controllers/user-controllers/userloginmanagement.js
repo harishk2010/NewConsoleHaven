@@ -24,6 +24,7 @@ const gethome = async (req, res) => {
 
         //
         let userData = req.session.user
+        const userId = userData._id;
 
 
 
@@ -47,10 +48,78 @@ const gethome = async (req, res) => {
             },
             {
                 $unwind: '$category'
+            },
+            {
+                $limit: 8
             }
         ])
+        const popularProducts = await Product.aggregate([
+            {
+                $match: {
+                    isBlocked: false,
+
+                }
+
+            },
+            {
+                $lookup: {
+                    from: 'category',
+                    localField: 'category',
+                    foreignField: '_id',
+                    as: 'category'
+                }
+            },
+            {
+                $unwind: '$category'
+            },
+            {
+                $sort:{
+                    popularity:-1
+                }
+            },
+            {
+                $limit: 8
+            }
+        ])
+        const newProducts = await Product.aggregate([
+            {
+                $match: {
+                    isBlocked: false,
+
+                }
+
+            },
+            {
+                $lookup: {
+                    from: 'category',
+                    localField: 'category',
+                    foreignField: '_id',
+                    as: 'category'
+                }
+            },
+            {
+                $unwind: '$category'
+            },
+            {
+                $sort:{
+                    createdOn:-1
+                }
+            },
+            {
+                $limit: 8
+            }
+        ])
+
+       
+        if(userData){
+            let wishlist= await Wishlist.findOne({ user: new mongoose.Types.ObjectId(userId) });
+            const wishlistCount = wishlist ? (wishlist.productId ? wishlist.productId.length : 0) : 0;
+    
+            res.render('user/index', { products, catagories,wishCt:wishlistCount, newProducts,popularProducts,userData, layout: 'layout' })
+        }else{
         //   console.log(produts)
-        res.render('user/index', { products, catagories, userData, layout: 'layout' })
+        res.render('user/index', { products, catagories, newProducts,popularProducts,userData, layout: 'layout' })
+        }
 
 
     } catch (error) {

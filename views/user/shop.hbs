@@ -40,78 +40,8 @@
                     <span id="pro_container">
                         <div class="row product-grid-3" id="productList">
                             {{#if proData}}
-                            {{#each proData}}
-                            <div class="col-lg-4 col-md-4 col-12 col-sm-6">
-                                <div class="product-cart-wrap mb-30">
-                                    <div class="product-img-action-wrap">
-                                        <div class="product-img product-img-zoom">
-                                            <a href="/productDetails/{{this._id}}">
-                                                <img class="default-img" src="/images/products/{{this.image.[0]}}"
-                                                    alt="">
-                                                <img class="hover-img" src="/images/products/{{this.image.[1]}}" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="product-action-1">
-                                            <a aria-label="Quick view" class="action-btn hover-up"
-                                                data-bs-toggle="modal" data-bs-target="#quickViewModal">
-                                                <i class="fi-rs-search"></i></a>
-                                            <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
-                                            <a aria-label="Compare" class="action-btn hover-up"
-                                                href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
-                                        </div>
-                                        <div class="product-badges product-badges-position product-badges-mrg">
-                                            <span class="hot">Hot</span>
-                                        </div>
-                                    </div>
-                                    <div class="product-content-wrap">
-                                        <div class="product-category">
-
-                                            <a href="shop-grid-right.html">{{this.category.category}}</a>
-
-                                        </div>
-                                        <h2><a href="/productDetails/{{this._id}}">{{this.name}}</a>
-                                            <input type="hidden" id="name{{this._id}}" value="{{this.name}}">
-                                            <input type="hidden" id="id" value="{{this._id}}">
-                                        </h2>
-                                        <div class="rating-result" title="90%">
-                                            <span>
-                                                <span>90%</span>
-                                            </span>
-                                        </div>
-                                        <div class="product-price">
-                                            <span>₹{{this.price}}</span>
-                                            <span class="old-price">₹245.8</span>
-                                        </div>
-
-                                        <div class="product-action-1 show">
-                                            <span>
-                                                <a data-id="{{this._id}}" aria-label="Add To Wishlist"
-                                                    class="wish action-btn hover-up" href="#"><i
-                                                        class="fi-rs-heart"></i></a>
-                                            </span>
-                                            {{!-- {{#if this.isWishlisted}}
-                                            <span id="click{{this._id}}">
-                                                <a onclick="removeFromWishlist('{{this._id}}')" id="icon-1"
-                                                    aria-label="Add To Wishlist" class="wish action-btn hover-up"
-                                                    href="#"><i class="fa-solid fa-heart"></i></a>
-                                            </span>
-                                            {{else}}
-                                            <span id="click{{this._id}}">
-                                                <a onclick="addToWishlist('{{this._id}}')" id="icon-2"
-                                                    aria-label="Add To Wishlist" class="wish action-btn hover-up"
-                                                    href="#"><i class="fi-rs-heart"></i></a>
-                                            </span>
-                                            {{/if}} --}}
-                                        </div>
-
-                                    </div>
-                                    {{!-- <span class="material-symbols-outlined">
-                                        heart_plus
-                                    </span> --}}
-                                </div>
-                            </div>
-                            {{/each}}
+                          
+                            
                             {{else}}
                             <div>
                                 <h2 class="m-5">No product available</h2>
@@ -274,12 +204,12 @@
                         </div>
                         <div class="product-action-1">
                             <a aria-label="Quick view" class="action-btn hover-up"
-                                data-bs-toggle="modal" data-bs-target="#quickViewModal">
+                               href="/productDetails/${product._id}" data-bs-target="#quickViewModal">
                                 <i class="fi-rs-search"></i></a>
-                            <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
-                            <a aria-label="Compare" class="action-btn hover-up"
-                                href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
+                            <a data-id="${product._id}" aria-label="Add To Wishlist"
+                                                    class="wish action-btn hover-up" href="#"><i
+                                                        class="fi-rs-heart"></i></a>
+                            
                         </div>
                         <div class="product-badges product-badges-position product-badges-mrg">
                             <span class="hot">Hot</span>
@@ -316,7 +246,7 @@
     // count.innerHTML=totalProducts
 
 $(document).ready(function () {
-    const userId = ""; // You need to set the userId here or fetch it dynamically
+    const userId = ""; 
 
     $('#productList').on('click', '.wish.action-btn', function (event) {
         event.preventDefault();
@@ -372,49 +302,49 @@ $(document).ready(function () {
 
     const searchProducts = () => {
         searchQuery = $('#searchInput').val();
-        currentPage = 1;
+        //currentPage = 1;
         fetchProducts();
     };
 
     const sortLowToHigh = () => {
         currentSort = 'priceAsc';
-        currentPage = 1;
+       // currentPage = 1;
         fetchProducts();
     };
 
     const sortHighToLow = () => {
         currentSort = 'priceDesc';
-        currentPage = 1;
+       // currentPage = 1;
         fetchProducts();
     };
 
     const sortAZ = () => {
         currentSort = 'nameAsc';
-        currentPage = 1;
+       // currentPage = 1;
         fetchProducts();
     };
 
     const sortZA = () => {
         currentSort = 'nameDesc';
-        currentPage = 1;
+      //  currentPage = 1;
         fetchProducts();
     };
 
     const newArrivals = () => {
         currentSort = 'newArrivals';
-        currentPage = 1;
+        //currentPage = 1;
         fetchProducts();
     };
 
     const popularity = () => {
         currentSort = 'popularity';
-        currentPage = 1;
+        //currentPage = 1;
         fetchProducts();
     };
 
     const filterByCategory = (categoryId) => {
         currentCategory = categoryId;
-        currentPage = 1;
+       // currentPage = 1;
         fetchProducts();
     };
     const limits = (ct) => {

@@ -9,64 +9,6 @@ const ObjectId = require('mongoose')
 const swal = require('sweetalert')
 
 let userData
-
-
-
-
-
-
-
-// const showWishlistPage = async (req, res) => {
-//     userData = req.session.user
-//     try {
-//         let id = userData._id
-//        // console.log(id, userData)
-
-//         // const WishListProd=await Wishlist.findOne({user:id}).lean()
-
-//         const wishlist = await Wishlist.findOne({ user: new mongoose.Types.ObjectId(id) });
-//         const wishlistCount = wishlist ? (wishlist.productId ? wishlist.productId.length : 0) : 0;
-
-//         const WishListProd = await Wishlist.aggregate([
-//             {
-//                 $match: { user: new mongoose.Types.ObjectId(id) }
-//             },
-//             {
-//                 $unwind: '$productId'
-//             }
-//             , {
-//                 $lookup: {
-//                     from: 'products',
-//                     foreignField: '_id',
-//                     localField: 'productId',
-//                     as: 'product'
-//                 }
-//             },
-//             {
-//                 $project: {
-//                     _id: 1,
-//                     productId: 1,
-//                     productName: { $arrayElemAt: ['$product.name', 0] },
-//                     productImage: { $arrayElemAt: ['$product.image', 0] },
-//                     productPrice: { $arrayElemAt: ['$product.price', 0] },
-//                     productQuantity: { $arrayElemAt: ['$product.stock', 0] },
-//                 }
-//             }
-//         ])
-//         console.log(WishListProd,"WishListProd")
-//         if(WishListProd.length>0){
-
-//             res.render('user/wishlist', { userData, WishListProd, wishCt: wishlistCount })
-//         }else{
-//             res.render('user/emptyWishlist', { userData})
-//         }
-       
-
-//     } catch (error) {
-//         console.log(error.message);
-//         res.status(500).send("Internal Server Error");
-//     }
-// }
 const showWishlistPage = async (req, res) => {
     const userData = req.session.user;
 

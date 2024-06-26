@@ -203,12 +203,52 @@ const myorders = async (req, res) => {
         const id = user._id
         const userData = await User.findById(id).lean();
         // const userDataObject = userData.toObject();
+        var page = 1;
+        if (req.query.page) {
+            page = req.query.page;
+        }
+        let limit = 10;
+        const skip = (page - 1) * limit;
 
         console.log(userData, "userdata")
         // const Id
-        const myOrders = await Order.find({ userId: id }).sort({ date: -1 }).lean()
+        const myOrders = await Order.aggregate([
+            {
+                $match:{
+                    userId:new mongoose.Types.ObjectId(id)
+                }
+            },
+            {
+                $project:{
+                    _id:1,
+                    date:1,
+                    orderId:1,
+                    status:1,
+                    amountAfterDscnt:1,
+                    total:1,
+
+                }
+
+            },
+            {
+                $sort:{
+                    date:-1
+                }
+            },
+            {
+                $skip:skip
+            },
+            {
+                $limit:limit
+            }
+            
+        ])
+        const count = await Order.find({}).count()
+    const totalPages = Math.ceil(count / limit)  // Example value
+    const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+
         console.log(myOrders, "myOrders")
-        res.render('user/myOrders', { userData: userData, myOrders })
+        res.render('user/myOrders', { userData: userData, myOrders ,pages, currentPage: page })
 
     } catch (error) {
         console.log(error.message);
@@ -348,104 +388,7 @@ const changepass = async (req, res) => {
     }
 }
 
-// const cancelorder = async (req, res) => {
-//     try {
-//         const { id } = req.body
-//         const ID = new mongoose.Types.ObjectId(id)
-//         const { updateWallet, payMethod } = req.body
-//         // console.log(ID)
-//         // console.log(id)
-//         await Order.updateOne({ _id: ID },
-//             {
-//                 $set: {
-//                     status: "Cancelled"
-//                 }
-//             }
-//         )
-//         const canceledorder = await Order.findOne({ _id: ID })
 
-//         console.log(canceledorder, "---------------------", canceledorder.paymentMethod)
-//         let arr = []
-//         let notcancelledAmt = 0
-
-//         if (canceledorder.paymentMethod === 'cash-on-delivery') {
-//             for (const data of canceledorder.product) {
-
-//                 arr.push(data._id);
-//                 await Product.updateMany({ _id: data._id }, { $inc: { stock: data.quantity } });
-
-
-
-
-//             }
-//         }
-//         if (canceledorder.paymentMethod === 'wallet' || canceledorder.paymentMethod === 'razorpay') {
-//             for (const data of canceledorder.product) {
-
-//                 arr.push(data._id);
-//                 await Product.updateMany({ _id: data._id }, { $inc: { stock: data.quantity } });
-
-//                 await User.updateMany(
-//                     { _id: req.session.user._id },
-//                     { $inc: { wallet: data.price * data.quantity } }
-//                 );
-//                 notcancelledAmt += data.price * data.quantity;
-
-
-
-
-
-//             }
-//             await User.updateOne(
-//                 { _id: req.session.user._id },
-
-//                 {
-//                     $push: {
-//                         history: {
-//                             amount: notcancelledAmt,
-//                             status: "refund",
-//                             date: Date.now()
-//                         }
-//                     }
-//                 }
-//             )
-
-//         }
-//         console.log(notcancelledAmt, "notcanceled")
-//         // if (canceledorder.payMethod != 'cash-on-delivery') {
-//         //     await User.updateOne(
-//         //         { _id: req.session.user._id },
-
-//         //         {
-//         //             $push: {
-//         //                 history: {
-//         //                     amount: notcancelledAmt,
-//         //                     status: "refund",
-//         //                     date: Date.now()
-//         //                 }
-//         //             }
-//         //         }
-//         //     )
-
-//         // }
-
-
-//         let upd
-//         arr.forEach(async (e) => {
-//             upd = await Order.updateMany(
-//                 { "product._id": e, "product.isCancelled": false },
-//                 { $set: { "product.$.isCancelled": true } }
-//             );
-//         })
-//         console.log(arr, ">>>", upd)
-//         res.json(true);
-
-//     } catch (error) {
-//         console.log(error.message);
-//         res.status(500).send("Internal Server Error");
-
-//     }
-// }
 
 const cancelorder = async (req, res) => {
     try {
@@ -503,17 +446,7 @@ const cancelorder = async (req, res) => {
 }
 
 
-// const returnOrder = async(req, res) => {
-//     try {
-//         const id = req.params.id
 
-//         await Order.findByIdAndUpdate(id, { $set: { status: 'Returned' } }, { new: true });
-
-//         res.json('sucess')
-//     } catch (error) {
-//         console.log(error);
-//     }
-//  }
 
 const cancelOneProduct = async (req, res) => {
     try {
